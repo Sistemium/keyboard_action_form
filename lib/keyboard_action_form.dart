@@ -64,7 +64,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
 
   FormBuilderTypeAheadWrapper(
       {super.key,
-      required this.enabled, 
+      this.enabled = true, 
       required this.initialValue,
       required this.name,
       required this.selectionToTextTransformer,
