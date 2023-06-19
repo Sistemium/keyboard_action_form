@@ -43,6 +43,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
   late final userInput = StateProvider.autoDispose((ref) {
     return selectionToTextTransformer(initialValue);
   });
+  final ValueChanged<T?>? onChanged;
 
   late final selectedProvider = StateProvider.autoDispose(
       (ref) => selectionToTextTransformer(initialValue));
@@ -64,7 +65,8 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
 
   FormBuilderTypeAheadWrapper(
       {super.key,
-      this.enabled = true, 
+      this.enabled = true,
+      this.onChanged,
       required this.initialValue,
       required this.name,
       required this.selectionToTextTransformer,
@@ -89,6 +91,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
       onChanged: (value) {
         ref.read(selectedProvider.notifier).state =
             this.selectionToTextTransformer(value as T);
+        onChanged?.call(value);
       },
       textFieldConfiguration: TextFieldConfiguration(
         autocorrect: false,
