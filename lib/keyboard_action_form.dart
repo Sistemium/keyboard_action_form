@@ -35,6 +35,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
   final focusNode = FocusNode();
   final T initialValue;
   final String name;
+  final bool enabled;
   final SelectionToTextTransformer<T> selectionToTextTransformer;
   final InputDecoration decoration;
   final SuggestionsCallback<T> suggestionsCallback;
@@ -63,6 +64,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
 
   FormBuilderTypeAheadWrapper(
       {super.key,
+      required this.enabled, 
       required this.initialValue,
       required this.name,
       required this.selectionToTextTransformer,
@@ -75,6 +77,7 @@ class FormBuilderTypeAheadWrapper<T> extends ConsumerWidget {
     ref.watch(userInput);
     ref.watch(selectedProvider);
     return FormBuilderTypeAhead<T>(
+      enabled: enabled,
       focusNode: focusNode,
       initialValue: initialValue,
       name: this.name,
