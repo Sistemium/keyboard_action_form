@@ -136,11 +136,14 @@ class KeyboardActionForm extends StatefulWidget {
   final List<Widget> Function(List<FocusNode> nodes) itemsCallback;
   final int length;
   final Function(Map<String, dynamic> data) onSave;
+  final String actionLabel;
   const KeyboardActionForm(
       {Key? key,
       required this.itemsCallback,
       required this.onSave,
-      required this.length})
+      required this.length,
+      required this.actionLabel,
+      })
       : super(key: key);
 
   @override
@@ -221,7 +224,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                     }
                                   }
                                 : null, // disable button when there's no change in form
-                            child: Text('Update'.tr()),
+                            child: Text(widget.actionLabel),
                           ),
                         ],
                       )
