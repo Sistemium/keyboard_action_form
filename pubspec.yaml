@@ -1,6 +1,6 @@
 name: keyboard_action_form
 description: A new Flutter package project.
-version: 0.1.6
+version: 0.1.7
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
