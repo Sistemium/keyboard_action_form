@@ -1,6 +1,5 @@
 include: package:flutter_lints/flutter.yaml
 
 linter:
-analyzer:
-  plugins:
-    - custom_lint
+  rules:
+    - prefer_relative_imports
