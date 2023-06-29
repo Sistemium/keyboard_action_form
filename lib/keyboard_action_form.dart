@@ -5,32 +5,6 @@ import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-class FormBuilderTextFieldWrapper extends StatelessWidget {
-  final FocusNode focusNode;
-  final String name;
-  final String initialValue;
-  final InputDecoration decoration;
-
-  const FormBuilderTextFieldWrapper({
-    super.key,
-    required this.name,
-    required this.initialValue,
-    required this.decoration,
-    required this.focusNode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      autocorrect: false,
-      focusNode: focusNode,
-      name: name,
-      initialValue: initialValue,
-      decoration: decoration,
-    );
-  }
-}
-
 class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final T initialValue;
   final String name;
