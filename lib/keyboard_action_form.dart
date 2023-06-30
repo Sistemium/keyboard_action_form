@@ -163,9 +163,9 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
               keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
               keyboardBarColor: Colors.grey[200],
               nextFocus: true,
-              actions: items
+              actions: focusNodes
                   .map((e) => KeyboardActionsItem(
-                        focusNode: e.focusNode!,
+                        focusNode: e,
                       ))
                   .toList(),
             ),
