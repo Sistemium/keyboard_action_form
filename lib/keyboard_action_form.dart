@@ -91,6 +91,7 @@ class _FormBuilderTypeAheadWrapperState<T>
         enableSuggestions: false,
         onTap: () {
           textEditingController.text = userInput;
+          widget.onChanged?.call(null);
         },
       ),
       validator: (T? value) {
