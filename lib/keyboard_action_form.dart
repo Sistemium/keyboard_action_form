@@ -86,7 +86,17 @@ class _FormBuilderTypeAheadWrapperState<T>
           widget.onChanged?.call(value);
         });
       },
-      hideOnEmpty: true,
+      noItemsFoundBuilder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            'No Items Found!'.tr(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Theme.of(context).disabledColor, fontSize: 18.0),
+          ),
+        );
+      },
       textFieldConfiguration: TextFieldConfiguration(
         autocorrect: false,
         enableSuggestions: false,
@@ -114,14 +124,13 @@ class KeyboardActionForm extends StatefulWidget {
   final int length;
   final Function(Map<String, dynamic> data) onSave;
   final String actionLabel;
-  const KeyboardActionForm(
-      {Key? key,
-      required this.itemsCallback,
-      required this.onSave,
-      required this.length,
-      required this.actionLabel,
-      })
-      : super(key: key);
+  const KeyboardActionForm({
+    Key? key,
+    required this.itemsCallback,
+    required this.onSave,
+    required this.length,
+    required this.actionLabel,
+  }) : super(key: key);
 
   @override
   State<KeyboardActionForm> createState() => _KeyboardActionFormState();
