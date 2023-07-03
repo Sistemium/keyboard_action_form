@@ -86,6 +86,7 @@ class _FormBuilderTypeAheadWrapperState<T>
           widget.onChanged?.call(value);
         });
       },
+      hideOnEmpty: true,
       textFieldConfiguration: TextFieldConfiguration(
         autocorrect: false,
         enableSuggestions: false,
