@@ -1,5 +1,5 @@
 name: keyboard_action_form
-version: 0.2.4
+version: 0.2.5
 publish_to: none
 
 environment:
@@ -10,7 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   easy_localization: 3.0.2
-  form_builder_extra_fields: 10.0.0
+  form_builder_extra_fields: 
+    git:
+      url: https://github.com/EdgarJan/form_builder_extra_fields.git
+      ref: '443a700' 
   keyboard_actions: 4.2.0
   flutter_typeahead: 4.6.2
   flutter_form_builder:
@@ -21,9 +24,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: 2.0.1
-dependency_overrides: 
-  flutter_form_builder:
-    git:
-      url: https://github.com/EdgarJan/flutter_form_builder.git
-      ref: 'df963c90f'
 flutter:
