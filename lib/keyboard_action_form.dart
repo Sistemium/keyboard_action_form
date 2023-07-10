@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 
 class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
