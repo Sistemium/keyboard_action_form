@@ -195,7 +195,8 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                         children: <Widget>[
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(context, rootNavigator: true)
+                                          .pop();
                             },
                             child: Text('Cancel'.tr()),
                           ),
@@ -207,7 +208,8 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                       Map<String, dynamic> formData =
                                           _formKey.currentState!.value;
                                       widget.onSave.call(formData);
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
                                     }
                                   }
                                 : null, // disable button when there's no change in form
