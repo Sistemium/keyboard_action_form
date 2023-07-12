@@ -7,6 +7,34 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 
+class FormBuilderTextFieldWrapper extends StatelessWidget {
+  final FocusNode focusNode;
+  final String name;
+  final String? initialValue;
+  final InputDecoration decoration;
+  final FormFieldValidator<String>? validator;
+
+  const FormBuilderTextFieldWrapper(
+      {super.key,
+      required this.focusNode,
+      required this.name,
+      this.initialValue,
+      required this.decoration,
+      this.validator});
+
+  @override
+  Widget build(BuildContext context) {
+    return FormBuilderTextField(
+      autocorrect: false,
+      focusNode: focusNode,
+      name: name,
+      initialValue: initialValue ?? '',
+      decoration: decoration,
+      validator: validator,
+    );
+  }
+}
+
 class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final T initialValue;
   final String name;
@@ -195,8 +223,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                         children: <Widget>[
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context, rootNavigator: true)
-                                          .pop();
+                              Navigator.of(context).pop();
                             },
                             child: Text('Cancel'.tr()),
                           ),
@@ -208,8 +235,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                       Map<String, dynamic> formData =
                                           _formKey.currentState!.value;
                                       widget.onSave.call(formData);
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop();
+                                      Navigator.of(context).pop();
                                     }
                                   }
                                 : null, // disable button when there's no change in form
