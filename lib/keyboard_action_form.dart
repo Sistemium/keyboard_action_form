@@ -155,7 +155,7 @@ class _FormBuilderTypeAheadWrapperState<T>
 class KeyboardActionForm extends StatefulWidget {
   final List<Widget> Function(List<FocusNode> nodes) itemsCallback;
   final int length;
-  final Function(Map<String, dynamic> data) onSave;
+  final dynamic Function(Map<String, dynamic> data) onSave;
   final String actionLabel;
   const KeyboardActionForm({
     Key? key,
@@ -238,8 +238,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                         autoScrollWhenFocusOnInvalid: true)) {
                                       Map<String, dynamic> formData =
                                           _formKey.currentState!.value;
-                                      widget.onSave.call(formData);
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop(widget.onSave.call(formData));
                                     }
                                   }
                                 : null, // disable button when there's no change in form
