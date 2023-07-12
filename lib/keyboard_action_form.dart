@@ -13,6 +13,7 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   final String? initialValue;
   final InputDecoration decoration;
   final FormFieldValidator<String>? validator;
+  final bool enabled;
 
   const FormBuilderTextFieldWrapper(
       {super.key,
@@ -20,7 +21,9 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
       required this.name,
       this.initialValue,
       required this.decoration,
-      this.validator});
+      this.validator,
+      this.enabled = true
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
       initialValue: initialValue ?? '',
       decoration: decoration,
       validator: validator,
+      enabled: enabled,
     );
   }
 }
