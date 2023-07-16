@@ -6,6 +6,7 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
+export 'package:form_builder_validators/form_builder_validators.dart';
 
 class FormBuilderTextFieldWrapper extends StatelessWidget {
   final FocusNode focusNode;
@@ -14,6 +15,8 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   final InputDecoration decoration;
   final FormFieldValidator<String>? validator;
   final bool enabled;
+  final ValueTransformer<String?>? valueTransformer;
+  final TextInputType? keyboardType;
 
   const FormBuilderTextFieldWrapper(
       {super.key,
@@ -22,7 +25,9 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
       this.initialValue,
       required this.decoration,
       this.validator,
-      this.enabled = true
+      this.enabled = true,
+      this.valueTransformer,
+      this.keyboardType,
       });
 
   @override
@@ -35,6 +40,8 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
       decoration: decoration,
       validator: validator,
       enabled: enabled,
+      valueTransformer: valueTransformer,
+      keyboardType: keyboardType,
     );
   }
 }
@@ -238,7 +245,8 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                         autoScrollWhenFocusOnInvalid: true)) {
                                       Map<String, dynamic> formData =
                                           _formKey.currentState!.value;
-                                      Navigator.of(context).pop(widget.onSave.call(formData));
+                                      Navigator.of(context)
+                                          .pop(widget.onSave.call(formData));
                                     }
                                   }
                                 : null, // disable button when there's no change in form

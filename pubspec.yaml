@@ -1,5 +1,5 @@
 name: keyboard_action_form
-version: 0.3.2
+version: 0.3.3
 publish_to: none
 
 environment:
@@ -20,6 +20,7 @@ dependencies:
     git:
       url: https://github.com/EdgarJan/flutter_form_builder.git
       ref: 'df963c90f' 
+  form_builder_validators: 9.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
