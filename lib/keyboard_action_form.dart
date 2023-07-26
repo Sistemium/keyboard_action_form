@@ -164,7 +164,7 @@ class KeyboardActionForm extends StatefulWidget {
   final List<Widget> Function(List<FocusNode> nodes) itemsCallback;
   final int length;
   final dynamic Function(Map<String, dynamic> data) onSave;
-  final Function() onDelete;
+  final Function()? onDelete;
   final String actionLabel;
   const KeyboardActionForm({
     Key? key,
@@ -241,11 +241,11 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                             },
                             child: Text('Cancel'.tr()),
                           ),
-                          CooldownButton(
+                          if (widget.onDelete != null) CooldownButton(
                             confirmText: '${'Delete'.tr()}?',
                             onConfirm: () {
-                              Navigator.of(context)
-                                          .pop(widget.onDelete.call());
+                              widget.onDelete?.call();
+                              Navigator.of(context).pop();
                             },
                             text: 'Delete'.tr(),
                           ),
