@@ -1,3 +1,4 @@
+import 'package:cooldown_button/cooldown_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -18,17 +19,17 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   final ValueTransformer<String?>? valueTransformer;
   final TextInputType? keyboardType;
 
-  const FormBuilderTextFieldWrapper(
-      {super.key,
-      required this.focusNode,
-      required this.name,
-      this.initialValue,
-      required this.decoration,
-      this.validator,
-      this.enabled = true,
-      this.valueTransformer,
-      this.keyboardType,
-      });
+  const FormBuilderTextFieldWrapper({
+    super.key,
+    required this.focusNode,
+    required this.name,
+    this.initialValue,
+    required this.decoration,
+    this.validator,
+    this.enabled = true,
+    this.valueTransformer,
+    this.keyboardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -163,11 +164,13 @@ class KeyboardActionForm extends StatefulWidget {
   final List<Widget> Function(List<FocusNode> nodes) itemsCallback;
   final int length;
   final dynamic Function(Map<String, dynamic> data) onSave;
+  final Function() onDelete;
   final String actionLabel;
   const KeyboardActionForm({
     Key? key,
     required this.itemsCallback,
     required this.onSave,
+    required this.onDelete,
     required this.length,
     required this.actionLabel,
   }) : super(key: key);
@@ -237,6 +240,14 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                               Navigator.of(context).pop();
                             },
                             child: Text('Cancel'.tr()),
+                          ),
+                          CooldownButton(
+                            confirmText: '${'Delete'.tr()}?',
+                            onConfirm: () {
+                              Navigator.of(context)
+                                          .pop(widget.onDelete.call());
+                            },
+                            text: 'Delete'.tr(),
                           ),
                           ElevatedButton(
                             onPressed: formChanged
