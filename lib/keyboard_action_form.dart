@@ -170,7 +170,7 @@ class KeyboardActionForm extends StatefulWidget {
     Key? key,
     required this.itemsCallback,
     required this.onSave,
-    required this.onDelete,
+    this.onDelete,
     required this.length,
     required this.actionLabel,
   }) : super(key: key);
