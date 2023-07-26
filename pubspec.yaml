@@ -24,7 +24,7 @@ dependencies:
   cooldown_button:
     git:
       url: https://github.com/EdgarJan/cooldown_button.git
-      ref: '553f688' 
+      ref: 'b2d2c4b' 
 dev_dependencies:
   flutter_test:
     sdk: flutter
