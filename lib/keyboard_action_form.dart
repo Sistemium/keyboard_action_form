@@ -245,7 +245,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                             confirmText: '${'Delete'.tr()}?',
                             onConfirm: () {
                               widget.onDelete?.call();
-                              Navigator.of(context).pop();
+                              Navigator.of(context).pop('delete');
                             },
                             text: 'Delete'.tr(),
                           ),
