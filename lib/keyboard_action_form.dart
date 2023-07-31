@@ -232,39 +232,43 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                     children: <Widget>[
                       ...items,
                       const Spacer(),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Cancel'.tr()),
-                          ),
-                          if (widget.onDelete != null) CooldownButton(
-                            confirmText: '${'Delete'.tr()}?',
-                            onConfirm: () {
-                              widget.onDelete?.call();
-                              Navigator.of(context).pop('delete');
-                            },
-                            text: 'Delete'.tr(),
-                          ),
-                          ElevatedButton(
-                            onPressed: formChanged
-                                ? () {
-                                    if (_formKey.currentState!.saveAndValidate(
-                                        autoScrollWhenFocusOnInvalid: true)) {
-                                      Map<String, dynamic> formData =
-                                          _formKey.currentState!.value;
-                                      Navigator.of(context)
-                                          .pop(widget.onSave.call(formData));
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'.tr()),
+                            ),
+                            if (widget.onDelete != null)
+                              CooldownButton(
+                                confirmText: '${'Delete'.tr()}?',
+                                onConfirm: () {
+                                  widget.onDelete?.call();
+                                  Navigator.of(context).pop('delete');
+                                },
+                                text: 'Delete'.tr(),
+                              ),
+                            ElevatedButton(
+                              onPressed: formChanged
+                                  ? () {
+                                      if (_formKey.currentState!.saveAndValidate(
+                                          autoScrollWhenFocusOnInvalid: true)) {
+                                        Map<String, dynamic> formData =
+                                            _formKey.currentState!.value;
+                                        Navigator.of(context)
+                                            .pop(widget.onSave.call(formData));
+                                      }
                                     }
-                                  }
-                                : null, // disable button when there's no change in form
-                            child: Text(widget.actionLabel),
-                          ),
-                        ],
-                      )
+                                  : null, // disable button when there's no change in form
+                              child: Text(widget.actionLabel),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 )),
