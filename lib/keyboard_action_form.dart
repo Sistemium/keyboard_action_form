@@ -92,6 +92,13 @@ class _FormBuilderTypeAheadWrapperState<T>
     }
   }
 
+  void updateValue(T newValue) {
+    setState(() {
+      userInput = widget.selectionToTextTransformer(newValue);
+      textEditingController.text = userInput;
+    });
+  }
+
   @override
   void initState() {
     textEditingController = TextEditingController()
@@ -255,8 +262,10 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                             ElevatedButton(
                               onPressed: formChanged
                                   ? () {
-                                      if (_formKey.currentState!.saveAndValidate(
-                                          autoScrollWhenFocusOnInvalid: true)) {
+                                      if (_formKey.currentState!
+                                          .saveAndValidate(
+                                              autoScrollWhenFocusOnInvalid:
+                                                  true)) {
                                         Map<String, dynamic> formData =
                                             _formKey.currentState!.value;
                                         Navigator.of(context)
