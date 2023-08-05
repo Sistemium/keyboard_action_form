@@ -47,7 +47,16 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   }
 }
 
+class TypeAheadController<T> {
+  _FormBuilderTypeAheadWrapperState<T>? _state;
+
+  void updateValue(T newValue) {
+    _state?.updateValue(newValue);
+  }
+}
+
 class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
+  final TypeAheadController<T>? controller;
   final T initialValue;
   final String name;
   final bool enabled;
@@ -69,6 +78,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
     required this.suggestionsCallback,
     required this.itemBuilder,
     required this.focusNode,
+    this.controller,
   });
 
   @override
@@ -105,6 +115,7 @@ class _FormBuilderTypeAheadWrapperState<T>
       ..text = widget.selectionToTextTransformer(widget.initialValue);
 
     textEditingController.addListener(listener);
+    widget.controller?._state = this;
     super.initState();
   }
 
@@ -113,6 +124,7 @@ class _FormBuilderTypeAheadWrapperState<T>
     textEditingController.removeListener(listener);
     //causes error, apparently its being disposed by FormBuilderTypeAhead
     // textEditingController.dispose();
+    widget.controller?._state = null;
     super.dispose();
   }
 
