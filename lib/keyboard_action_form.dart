@@ -60,6 +60,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final T initialValue;
   final String name;
   final bool enabled;
+  final bool validate;
   final SelectionToTextTransformer<T> selectionToTextTransformer;
   final InputDecoration decoration;
   final SuggestionsCallback<T> suggestionsCallback;
@@ -70,6 +71,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   const FormBuilderTypeAheadWrapper({
     super.key,
     this.enabled = true,
+    this.validate = true,
     this.onChanged,
     required this.initialValue,
     required this.name,
@@ -166,10 +168,10 @@ class _FormBuilderTypeAheadWrapperState<T>
         },
       ),
       validator: (T? value) {
-        if (value == null || textEditingController.text == '') {
+        if (widget.validate && (value == null || textEditingController.text == '')) {
           return 'Field is required'.tr();
         }
-        if (widget.selectionToTextTransformer(value) !=
+        if (value != null && textEditingController.text != '' && widget.selectionToTextTransformer(value) !=
             textEditingController.text) {
           return 'Unknown ${widget.name}';
         }
