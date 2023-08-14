@@ -168,11 +168,14 @@ class _FormBuilderTypeAheadWrapperState<T>
         },
       ),
       validator: (T? value) {
-        if (widget.validate && (value == null || textEditingController.text == '')) {
+        if (widget.validate &&
+            (value == null || textEditingController.text == '')) {
           return 'Field is required'.tr();
         }
-        if (value != null && textEditingController.text != '' && widget.selectionToTextTransformer(value) !=
-            textEditingController.text) {
+        if (value != null &&
+            textEditingController.text != '' &&
+            widget.selectionToTextTransformer(value) !=
+                textEditingController.text) {
           return 'Unknown ${widget.name}';
         }
         return null;
@@ -187,14 +190,16 @@ class KeyboardActionForm extends StatefulWidget {
   final dynamic Function(Map<String, dynamic> data) onSave;
   final Function()? onDelete;
   final String actionLabel;
-  const KeyboardActionForm({
-    Key? key,
-    required this.itemsCallback,
-    required this.onSave,
-    this.onDelete,
-    required this.length,
-    required this.actionLabel,
-  }) : super(key: key);
+  final bool enableActionWhenNoChanges;
+  const KeyboardActionForm(
+      {Key? key,
+      required this.itemsCallback,
+      required this.onSave,
+      this.onDelete,
+      required this.length,
+      required this.actionLabel,
+      this.enableActionWhenNoChanges = false})
+      : super(key: key);
 
   @override
   State<KeyboardActionForm> createState() => _KeyboardActionFormState();
@@ -204,7 +209,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   late final List<FocusNode> focusNodes =
       List.generate(widget.length, (index) => FocusNode());
-  var formChanged = false;
+  late var formChanged = widget.enableActionWhenNoChanges;
 
   @override
   void initState() {
