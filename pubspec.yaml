@@ -1,10 +1,10 @@
 name: keyboard_action_form
-version: 0.4.8
+version: 0.4.9
 publish_to: none
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
-  flutter: ">=3.10.5"
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: ">=3.13.0"
 
 dependencies:
   flutter:
@@ -18,9 +18,9 @@ dependencies:
   cooldown_button:
     git:
       url: https://github.com/EdgarJan/cooldown_button.git
-      ref: 'e2367c9' 
+      ref: '102c683' 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: 2.0.1
+  flutter_lints: 2.0.2
 flutter:
