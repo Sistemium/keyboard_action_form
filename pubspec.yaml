@@ -1,5 +1,5 @@
 name: keyboard_action_form
-version: 0.5.0
+version: 0.5.1
 publish_to: none
 
 environment:
@@ -18,7 +18,7 @@ dependencies:
   cooldown_button:
     git:
       url: https://github.com/EdgarJan/cooldown_button.git
-      ref: 'ae78f60' 
+      ref: 'ef3772e' 
 dev_dependencies:
   flutter_test:
     sdk: flutter

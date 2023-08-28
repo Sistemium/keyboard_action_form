@@ -253,52 +253,59 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                 constraints: BoxConstraints(
                     minHeight: constraints.maxHeight -
                         45), //45 is size of keyboard bar, see keyboard_actions.dart:15
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: <Widget>[
-                      ...items,
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
+                child: Column(
+                  children: <Widget>[
+                    ...items,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text('Cancel'.tr()),
                             ),
-                            if (widget.onDelete != null)
-                              CooldownButton(
-                                confirmText: '${'Delete'.tr()}?',
-                                onConfirm: () {
-                                  widget.onDelete?.call();
-                                  Navigator.of(context).pop('delete');
-                                },
-                                text: 'Delete'.tr(),
+                          ),
+                          if (widget.onDelete != null)
+                            CooldownButton(
+                              confirmText: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('${'Delete'.tr()}?'),
                               ),
-                            ElevatedButton(
-                              onPressed: formChanged
-                                  ? () {
-                                      if (_formKey.currentState!
-                                          .saveAndValidate(
-                                              autoScrollWhenFocusOnInvalid:
-                                                  true)) {
-                                        Map<String, dynamic> formData =
-                                            _formKey.currentState!.value;
-                                        Navigator.of(context)
-                                            .pop(widget.onSave.call(formData));
-                                      }
+                              onConfirm: () {
+                                widget.onDelete?.call();
+                                Navigator.of(context).pop('delete');
+                              },
+                              text: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Delete'.tr()),
+                              ),
+                            ),
+                          ElevatedButton(
+                            onPressed: formChanged
+                                ? () {
+                                    if (_formKey.currentState!.saveAndValidate(
+                                        autoScrollWhenFocusOnInvalid: true)) {
+                                      Map<String, dynamic> formData =
+                                          _formKey.currentState!.value;
+                                      Navigator.of(context)
+                                          .pop(widget.onSave.call(formData));
                                     }
-                                  : null, // disable button when there's no change in form
+                                  }
+                                : null, // disable button when there's no change in form
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(widget.actionLabel),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )),
           );
         },
