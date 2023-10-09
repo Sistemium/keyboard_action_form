@@ -40,13 +40,27 @@ class FormBuilderTextFieldWrapper extends StatefulWidget {
 
 class _FormBuilderTextFieldWrapperState
     extends State<FormBuilderTextFieldWrapper> {
-  final TextEditingController textEditingController = TextEditingController();
+  late TextEditingController textEditingController;
+
+  @override
+  void initState() {
+    textEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
       autocorrect: false,
       focusNode: widget.focusNode,
       name: widget.name,
+      controller: textEditingController,
       initialValue: widget.initialValue ?? '',
       decoration: widget.decoration.copyWith(
         suffixIcon: textEditingController.text.isNotEmpty
