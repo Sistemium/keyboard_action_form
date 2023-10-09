@@ -9,7 +9,7 @@ export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 export 'package:form_builder_validators/form_builder_validators.dart';
 
-class FormBuilderTextFieldWrapper extends StatelessWidget {
+class FormBuilderTextFieldWrapper extends StatefulWidget {
   final FocusNode focusNode;
   final String name;
   final String? initialValue;
@@ -18,6 +18,7 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   final bool enabled;
   final ValueTransformer<String?>? valueTransformer;
   final TextInputType? keyboardType;
+  final ValueChanged? onChanged;
 
   const FormBuilderTextFieldWrapper({
     super.key,
@@ -25,6 +26,7 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
     required this.name,
     this.initialValue,
     required this.decoration,
+    required this.onChanged,
     this.validator,
     this.enabled = true,
     this.valueTransformer,
@@ -32,17 +34,37 @@ class FormBuilderTextFieldWrapper extends StatelessWidget {
   });
 
   @override
+  State<FormBuilderTextFieldWrapper> createState() =>
+      _FormBuilderTextFieldWrapperState();
+}
+
+class _FormBuilderTextFieldWrapperState
+    extends State<FormBuilderTextFieldWrapper> {
+  final TextEditingController textEditingController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
       autocorrect: false,
-      focusNode: focusNode,
-      name: name,
-      initialValue: initialValue ?? '',
-      decoration: decoration,
-      validator: validator,
-      enabled: enabled,
-      valueTransformer: valueTransformer,
-      keyboardType: keyboardType,
+      focusNode: widget.focusNode,
+      name: widget.name,
+      initialValue: widget.initialValue ?? '',
+      decoration: widget.decoration.copyWith(
+        suffixIcon: textEditingController.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  setState(() {
+                    textEditingController.clear();
+                    widget.onChanged?.call(null);
+                  });
+                },
+              )
+            : null,
+      ),
+      validator: widget.validator,
+      enabled: widget.enabled,
+      valueTransformer: widget.valueTransformer,
+      keyboardType: widget.keyboardType,
     );
   }
 }
@@ -72,7 +94,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
     super.key,
     this.enabled = true,
     this.validate = true,
-    this.onChanged,
+    required this.onChanged,
     required this.initialValue,
     required this.name,
     required this.selectionToTextTransformer,
@@ -138,7 +160,19 @@ class _FormBuilderTypeAheadWrapperState<T>
       initialValue: widget.initialValue,
       name: widget.name,
       selectionToTextTransformer: widget.selectionToTextTransformer,
-      decoration: widget.decoration,
+      decoration: widget.decoration.copyWith(
+        suffixIcon: textEditingController.text.isNotEmpty
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  setState(() {
+                    textEditingController.clear();
+                    widget.onChanged?.call(null);
+                  });
+                },
+              )
+            : null,
+      ),
       suggestionsCallback: widget.suggestionsCallback,
       itemBuilder: widget.itemBuilder,
       controller: textEditingController,
@@ -164,7 +198,6 @@ class _FormBuilderTypeAheadWrapperState<T>
         enableSuggestions: false,
         onTap: () {
           textEditingController.text = userInput;
-          widget.onChanged?.call(null);
         },
       ),
       validator: (T? value) {
