@@ -45,6 +45,7 @@ class _FormBuilderTextFieldWrapperState
   @override
   void initState() {
     textEditingController = TextEditingController();
+    textEditingController.text = widget.initialValue ?? '';
     super.initState();
   }
 
@@ -61,7 +62,6 @@ class _FormBuilderTextFieldWrapperState
       focusNode: widget.focusNode,
       name: widget.name,
       controller: textEditingController,
-      initialValue: widget.initialValue ?? '',
       decoration: widget.decoration.copyWith(
         suffixIcon: textEditingController.text.isNotEmpty
             ? IconButton(
