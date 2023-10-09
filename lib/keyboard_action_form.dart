@@ -154,6 +154,7 @@ class _FormBuilderTypeAheadWrapperState<T>
 
   @override
   Widget build(BuildContext context) {
+    final formState = FormBuilder.of(context);
     return FormBuilderTypeAhead<T>(
       enabled: widget.enabled,
       focusNode: widget.focusNode,
@@ -163,10 +164,12 @@ class _FormBuilderTypeAheadWrapperState<T>
       decoration: widget.decoration.copyWith(
         suffixIcon: textEditingController.text.isNotEmpty
             ? IconButton(
-                icon: Icon(Icons.clear),
+                icon: const Icon(Icons.clear),
                 onPressed: () {
                   setState(() {
-                    textEditingController.clear();
+                    textEditingController.text = '';
+                    selected = '';
+                    formState?.fields[widget.name]?.didChange(null);
                     widget.onChanged?.call(null);
                   });
                 },
@@ -231,7 +234,7 @@ class KeyboardActionForm extends StatefulWidget {
       this.onDelete,
       required this.length,
       required this.actionLabel,
-      this.enableActionWhenNoChanges = false})
+      this.enableActionWhenNoChanges = true})
       : super(key: key);
 
   @override
