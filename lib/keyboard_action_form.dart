@@ -328,7 +328,6 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                               ),
                               onConfirm: () {
                                 widget.onDelete?.call();
-                                Navigator.of(context).pop('delete');
                               },
                               text: Padding(
                                 padding: const EdgeInsets.all(8.0),
