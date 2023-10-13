@@ -176,19 +176,20 @@ class _FormBuilderTypeAheadWrapperState<T>
       name: widget.name,
       selectionToTextTransformer: widget.selectionToTextTransformer,
       decoration: widget.decoration.copyWith(
-        suffixIcon: textEditingController.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  setState(() {
-                    textEditingController.text = '';
-                    selected = '';
-                    formState?.fields[widget.name]?.didChange(null);
-                    widget.onChanged?.call(null);
-                  });
-                },
-              )
-            : null,
+        suffixIcon: widget.decoration.suffixIcon ??
+            (textEditingController.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        textEditingController.text = '';
+                        selected = '';
+                        formState?.fields[widget.name]?.didChange(null);
+                        widget.onChanged?.call(null);
+                      });
+                    },
+                  )
+                : null),
       ),
       suggestionsCallback: widget.suggestionsCallback,
       itemBuilder: widget.itemBuilder,
