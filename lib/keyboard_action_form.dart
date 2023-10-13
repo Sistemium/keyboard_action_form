@@ -126,8 +126,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
 
 class _FormBuilderTypeAheadWrapperState<T>
     extends State<FormBuilderTypeAheadWrapper<T>> {
-  late String userInput =
-      widget.selectionToTextTransformer(widget.initialValue);
+  late String userInput = '';
 
   late String selected = widget.selectionToTextTransformer(widget.initialValue);
 
