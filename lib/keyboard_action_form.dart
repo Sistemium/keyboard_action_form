@@ -103,12 +103,14 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final ItemBuilder<T> itemBuilder;
   final ValueChanged<T?>? onChanged;
   final FocusNode focusNode;
+  final GestureTapCallback? onTap;
 
   const FormBuilderTypeAheadWrapper({
     super.key,
     this.enabled = true,
     this.validate = true,
     this.onChanged,
+    this.onTap,
     required this.initialValue,
     required this.name,
     required this.selectionToTextTransformer,
@@ -215,6 +217,7 @@ class _FormBuilderTypeAheadWrapperState<T>
         enableSuggestions: false,
         onTap: () {
           textEditingController.text = userInput;
+          widget.onTap?.call();
         },
       ),
       validator: (T? value) {
