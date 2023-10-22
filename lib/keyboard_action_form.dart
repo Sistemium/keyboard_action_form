@@ -86,8 +86,15 @@ class _FormBuilderTextFieldWrapperState
 class TypeAheadController<T> {
   _FormBuilderTypeAheadWrapperState<T>? _state;
 
-  void updateValue(T newValue) {
+  void updateValue(T newValue, String formName, BuildContext context) {
     _state?.updateValue(newValue);
+
+    final formBuilder = FormBuilder.of(context);
+    if (formBuilder != null) {
+      formBuilder.patchValue({formName: newValue});
+    } else {
+      print('FormBuilderState not found in the context.');
+    }
   }
 }
 
