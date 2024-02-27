@@ -41,44 +41,53 @@ class FormBuilderTextFieldWrapper extends StatefulWidget {
 class _FormBuilderTextFieldWrapperState
     extends State<FormBuilderTextFieldWrapper> {
   late TextEditingController textEditingController;
+  late ValueNotifier<bool> _controllerTextNotEmptyNotifier;
 
   @override
   void initState() {
     textEditingController = TextEditingController();
     textEditingController.text = widget.initialValue ?? '';
+    _controllerTextNotEmptyNotifier = ValueNotifier(textEditingController.text.isNotEmpty);
+    textEditingController.addListener(() {
+      _controllerTextNotEmptyNotifier.value = textEditingController.text.isNotEmpty;
+    });
     super.initState();
   }
 
   @override
   void dispose() {
     textEditingController.dispose();
+    _controllerTextNotEmptyNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      autocorrect: false,
-      focusNode: widget.focusNode,
-      name: widget.name,
-      controller: textEditingController,
-      decoration: widget.decoration.copyWith(
-        suffixIcon: textEditingController.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  setState(() {
-                    textEditingController.clear();
-                    widget.onChanged?.call(null);
-                  });
-                },
-              )
-            : null,
-      ),
-      validator: widget.validator,
-      enabled: widget.enabled,
-      valueTransformer: widget.valueTransformer,
-      keyboardType: widget.keyboardType,
+    return ValueListenableBuilder<bool>(
+      valueListenable: _controllerTextNotEmptyNotifier,
+      builder: (context, isNotEmpty, child) {
+        return FormBuilderTextField(
+          autocorrect: false,
+          focusNode: widget.focusNode,
+          name: widget.name,
+          controller: textEditingController,
+          decoration: widget.decoration.copyWith(
+            suffixIcon: isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      textEditingController.clear();
+                      widget.onChanged?.call(null);
+                    },
+                  )
+                : null,
+          ),
+          validator: widget.validator,
+          enabled: widget.enabled,
+          valueTransformer: widget.valueTransformer,
+          keyboardType: widget.keyboardType,
+        );
+      },
     );
   }
 }
@@ -135,30 +144,26 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
 
 class _FormBuilderTypeAheadWrapperState<T>
     extends State<FormBuilderTypeAheadWrapper<T>> {
-  late String userInput = '';
-
-  late String selected = widget.selectionToTextTransformer(widget.initialValue);
-
+  late ValueNotifier<String> userInputNotifier;
   late TextEditingController textEditingController;
+
   listener() {
-    if (textEditingController.text != selected) {
-      setState(() {
-        userInput = textEditingController.text;
-      });
+    if (textEditingController.text != userInputNotifier.value) {
+      userInputNotifier.value = textEditingController.text;
     }
   }
 
   void updateValue(T newValue) {
-    setState(() {
-      userInput = widget.selectionToTextTransformer(newValue);
-      textEditingController.text = userInput;
-    });
+    final newText = widget.selectionToTextTransformer(newValue);
+    userInputNotifier.value = newText;
+    textEditingController.text = newText;
   }
 
   @override
   void initState() {
     textEditingController = TextEditingController()
       ..text = widget.selectionToTextTransformer(widget.initialValue);
+    userInputNotifier = ValueNotifier<String>(textEditingController.text);
 
     textEditingController.addListener(listener);
     widget.controller?._state = this;
@@ -168,77 +173,78 @@ class _FormBuilderTypeAheadWrapperState<T>
   @override
   void dispose() {
     textEditingController.removeListener(listener);
-    //causes error, apparently its being disposed by FormBuilderTypeAhead
+    // causes error, apparently its being disposed by FormBuilderTypeAhead 
     // textEditingController.dispose();
-    widget.controller?._state = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final formState = FormBuilder.of(context);
-    return FormBuilderTypeAhead<T>(
-      enabled: widget.enabled,
-      focusNode: widget.focusNode,
-      initialValue: widget.initialValue,
-      name: widget.name,
-      selectionToTextTransformer: widget.selectionToTextTransformer,
-      decoration: widget.decoration.copyWith(
-        suffixIcon: widget.decoration.suffixIcon ??
-            (textEditingController.text.isNotEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        textEditingController.text = '';
-                        selected = '';
-                        formState?.fields[widget.name]?.didChange(null);
-                        widget.onChanged?.call(null);
-                      });
-                    },
-                  )
-                : null),
-      ),
-      suggestionsCallback: widget.suggestionsCallback,
-      itemBuilder: widget.itemBuilder,
-      controller: textEditingController,
-      onChanged: (value) {
-        setState(() {
-          selected = widget.selectionToTextTransformer(value as T);
-          widget.onChanged?.call(value);
-        });
-      },
-      noItemsFoundBuilder: (context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            'No Items Found!'.tr(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Theme.of(context).disabledColor, fontSize: 18.0),
+    return ValueListenableBuilder(
+      valueListenable: userInputNotifier,
+      builder: (context, String userInput, _) {
+        return FormBuilderTypeAhead<T>(
+          enabled: widget.enabled,
+          focusNode: widget.focusNode,
+          initialValue: widget.initialValue,
+          name: widget.name,
+          selectionToTextTransformer: widget.selectionToTextTransformer,
+          decoration: widget.decoration.copyWith(
+            suffixIcon: widget.decoration.suffixIcon ??
+                (userInput.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          textEditingController.text = '';
+                          userInputNotifier.value = '';
+                          formState?.fields[widget.name]?.didChange(null);
+                          widget.onChanged?.call(null);
+                        },
+                      )
+                    : null),
           ),
+          suggestionsCallback: widget.suggestionsCallback,
+          itemBuilder: widget.itemBuilder,
+          controller: textEditingController,
+          onChanged: (value) {
+            final newValueText = widget.selectionToTextTransformer(value as T);
+            userInputNotifier.value = newValueText;
+            widget.onChanged?.call(value);
+          },
+          noItemsFoundBuilder: (context) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                'No Items Found!'.tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 18.0),
+              ),
+            );
+          },
+          textFieldConfiguration: TextFieldConfiguration(
+            autocorrect: false,
+            enableSuggestions: false,
+            onTap: () {
+              textEditingController.text = userInput;
+              widget.onTap?.call();
+            },
+          ),
+          validator: (T? value) {
+            if (widget.validate &&
+                (value == null || textEditingController.text == '')) {
+              return 'Field is required'.tr();
+            }
+            if (value != null &&
+                textEditingController.text != '' &&
+                widget.selectionToTextTransformer(value) !=
+                    textEditingController.text) {
+              return 'Unknown ${widget.name}';
+            }
+            return null;
+          },
         );
-      },
-      textFieldConfiguration: TextFieldConfiguration(
-        autocorrect: false,
-        enableSuggestions: false,
-        onTap: () {
-          textEditingController.text = userInput;
-          widget.onTap?.call();
-        },
-      ),
-      validator: (T? value) {
-        if (widget.validate &&
-            (value == null || textEditingController.text == '')) {
-          return 'Field is required'.tr();
-        }
-        if (value != null &&
-            textEditingController.text != '' &&
-            widget.selectionToTextTransformer(value) !=
-                textEditingController.text) {
-          return 'Unknown ${widget.name}';
-        }
-        return null;
       },
     );
   }
@@ -269,30 +275,25 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   late final List<FocusNode> focusNodes =
       List.generate(widget.length, (index) => FocusNode());
-  late var formChanged = widget.enableActionWhenNoChanges;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  late final ValueNotifier<bool> formChangedNotifier =
+      ValueNotifier<bool>(widget.enableActionWhenNoChanges);
 
   @override
   void dispose() {
     for (var element in focusNodes) {
       element.dispose();
     }
+    formChangedNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // perhaps passing builder is in order? Anyway this line needs to be here, its essentiol to rebuild items when KeyboardActionForm gets rebuild
+    // perhaps passing builder is in order? Anyway this line needs to be here, its essential to rebuild items when KeyboardActionForm gets rebuild
     final List items = widget.itemsCallback.call(focusNodes);
     return FormBuilder(
       onChanged: () {
-        setState(() {
-          formChanged = true;
-        });
+        formChangedNotifier.value = true;
       },
       key: _formKey,
       child: LayoutBuilder(
@@ -344,22 +345,27 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                 child: Text('Delete'.tr()),
                               ),
                             ),
-                          ElevatedButton(
-                            onPressed: formChanged
-                                ? () {
-                                    if (_formKey.currentState!.saveAndValidate(
-                                        autoScrollWhenFocusOnInvalid: true)) {
-                                      Map<String, dynamic> formData =
-                                          _formKey.currentState!.value;
-                                      Navigator.of(context)
-                                          .pop(widget.onSave.call(formData));
-                                    }
-                                  }
-                                : null, // disable button when there's no change in form
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(widget.actionLabel),
-                            ),
+                          ValueListenableBuilder<bool>(
+                            valueListenable: formChangedNotifier,
+                            builder: (context, formChanged, child) {
+                              return ElevatedButton(
+                                onPressed: formChanged
+                                    ? () {
+                                        if (_formKey.currentState!.saveAndValidate(
+                                            autoScrollWhenFocusOnInvalid: true)) {
+                                          Map<String, dynamic> formData =
+                                              _formKey.currentState!.value;
+                                          Navigator.of(context)
+                                              .pop(widget.onSave.call(formData));
+                                        }
+                                      }
+                                    : null, // disable button when there's no change in form
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(widget.actionLabel),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
