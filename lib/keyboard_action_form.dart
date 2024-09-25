@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 export 'package:form_builder_validators/form_builder_validators.dart';
+import 'dart:async';
 
 class FormBuilderTextFieldWrapper extends StatefulWidget {
   final FocusNode focusNode;
@@ -47,9 +47,11 @@ class _FormBuilderTextFieldWrapperState
   void initState() {
     textEditingController = TextEditingController();
     textEditingController.text = widget.initialValue ?? '';
-    _controllerTextNotEmptyNotifier = ValueNotifier(textEditingController.text.isNotEmpty);
+    _controllerTextNotEmptyNotifier =
+        ValueNotifier(textEditingController.text.isNotEmpty);
     textEditingController.addListener(() {
-      _controllerTextNotEmptyNotifier.value = textEditingController.text.isNotEmpty;
+      _controllerTextNotEmptyNotifier.value =
+          textEditingController.text.isNotEmpty;
     });
     super.initState();
   }
@@ -115,8 +117,8 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final bool validate;
   final SelectionToTextTransformer<T> selectionToTextTransformer;
   final InputDecoration decoration;
-  final SuggestionsCallback<T> suggestionsCallback;
-  final ItemBuilder<T> itemBuilder;
+  final FutureOr<List<T>?> Function(String) suggestionsCallback;
+  final Widget Function(BuildContext, T) itemBuilder;
   final ValueChanged<T?>? onChanged;
   final FocusNode focusNode;
   final GestureTapCallback? onTap;
@@ -173,7 +175,7 @@ class _FormBuilderTypeAheadWrapperState<T>
   @override
   void dispose() {
     textEditingController.removeListener(listener);
-    // causes error, apparently its being disposed by FormBuilderTypeAhead 
+    // causes error, apparently its being disposed by FormBuilderTypeAhead
     // textEditingController.dispose();
     super.dispose();
   }
@@ -212,7 +214,7 @@ class _FormBuilderTypeAheadWrapperState<T>
             userInputNotifier.value = newValueText;
             widget.onChanged?.call(value);
           },
-          noItemsFoundBuilder: (context) {
+          emptyBuilder: (context) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
@@ -223,7 +225,7 @@ class _FormBuilderTypeAheadWrapperState<T>
               ),
             );
           },
-          textFieldConfiguration: TextFieldConfiguration(
+          customTextField: TextField(
             autocorrect: false,
             enableSuggestions: false,
             onTap: () {
@@ -351,12 +353,14 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                               return ElevatedButton(
                                 onPressed: formChanged
                                     ? () {
-                                        if (_formKey.currentState!.saveAndValidate(
-                                            autoScrollWhenFocusOnInvalid: true)) {
+                                        if (_formKey.currentState!
+                                            .saveAndValidate(
+                                                autoScrollWhenFocusOnInvalid:
+                                                    true)) {
                                           Map<String, dynamic> formData =
                                               _formKey.currentState!.value;
-                                          Navigator.of(context)
-                                              .pop(widget.onSave.call(formData));
+                                          Navigator.of(context).pop(
+                                              widget.onSave.call(formData));
                                         }
                                       }
                                     : null, // disable button when there's no change in form
