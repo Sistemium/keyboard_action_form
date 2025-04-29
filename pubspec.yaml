@@ -1,20 +1,20 @@
 name: keyboard_action_form
-version: 0.6.7
+version: 0.6.8
 publish_to: none
 
 environment:
-  sdk: '>=3.5.3 <4.0.0'
-  flutter: ">=3.24.3"
+  sdk: '>=3.7.2 <4.0.0'
+  flutter: ">=3.29.3"
 
 dependencies:
   flutter:
     sdk: flutter
-  easy_localization: 3.0.7
-  form_builder_extra_fields: 11.0.0
+  easy_localization: 3.0.7+1
+  form_builder_extra_fields: 12.0.0
   keyboard_actions: 4.2.0
   flutter_typeahead: 5.2.0
-  flutter_form_builder: 9.4.1
-  form_builder_validators: 11.0.0
+  flutter_form_builder: 10.0.1
+  form_builder_validators: 11.1.2
   cooldown_button:
     git:
       url: https://github.com/EdgarJan/cooldown_button.git

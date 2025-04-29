@@ -18,6 +18,7 @@ class FormBuilderTextFieldWrapper extends StatefulWidget {
   final bool enabled;
   final ValueTransformer<String?>? valueTransformer;
   final TextInputType? keyboardType;
+  final int? maxLines;
   final ValueChanged? onChanged;
 
   const FormBuilderTextFieldWrapper({
@@ -31,6 +32,7 @@ class FormBuilderTextFieldWrapper extends StatefulWidget {
     this.enabled = true,
     this.valueTransformer,
     this.keyboardType,
+    this.maxLines,
   });
 
   @override
@@ -88,6 +90,7 @@ class _FormBuilderTextFieldWrapperState
           enabled: widget.enabled,
           valueTransformer: widget.valueTransformer,
           keyboardType: widget.keyboardType,
+          maxLines: widget.maxLines,
         );
       },
     );
