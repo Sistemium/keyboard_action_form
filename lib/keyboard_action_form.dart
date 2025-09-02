@@ -106,6 +106,8 @@ class TypeAheadController<T> {
     final formBuilder = FormBuilder.of(context);
     if (formBuilder != null) {
       formBuilder.patchValue({formName: newValue});
+      // Trigger form validation to clear any validation errors
+      formBuilder.fields[formName]?.validate();
     } else {
       print('FormBuilderState not found in the context.');
     }
@@ -160,8 +162,12 @@ class _FormBuilderTypeAheadWrapperState<T>
 
   void updateValue(T newValue) {
     final newText = widget.selectionToTextTransformer(newValue);
+    // Remove listener temporarily to avoid triggering during programmatic update
+    textEditingController.removeListener(listener);
     userInputNotifier.value = newText;
     textEditingController.text = newText;
+    // Re-add listener after update
+    textEditingController.addListener(listener);
   }
 
   @override
