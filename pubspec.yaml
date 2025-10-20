@@ -1,5 +1,5 @@
 name: keyboard_action_form
-version: 0.7.1
+version: 0.7.0
 publish_to: none
 
 environment:
@@ -10,11 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   easy_localization: 3.0.8
-  form_builder_extra_fields: 12.1.0
-  keyboard_actions:
-    git:
-      url: https://github.com/EdgarJan/flutter_keyboard_actions.git
-      ref: '561a1e3'
+  form_builder_extra_fields: 12.1.0 
+  keyboard_actions: 4.2.0
   flutter_typeahead: 5.2.0
   flutter_form_builder: 10.2.0
   form_builder_validators: 11.2.0
