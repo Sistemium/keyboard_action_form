@@ -128,6 +128,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final FocusNode focusNode;
   final GestureTapCallback? onTap;
   final BoxConstraints? constraints;
+  final bool autoFlipDirection;
 
   const FormBuilderTypeAheadWrapper({
     super.key,
@@ -136,6 +137,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
     this.onChanged,
     this.onTap,
     this.constraints,
+    this.autoFlipDirection = true,
     required this.initialValue,
     required this.name,
     required this.selectionToTextTransformer,
@@ -204,6 +206,7 @@ class _FormBuilderTypeAheadWrapperState<T>
           name: widget.name,
           selectionToTextTransformer: widget.selectionToTextTransformer,
           constraints: widget.constraints,
+          autoFlipDirection: widget.autoFlipDirection,
           decoration: widget.decoration.copyWith(
             suffixIcon: widget.decoration.suffixIcon ??
                 (userInput.isNotEmpty
