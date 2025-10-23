@@ -127,7 +127,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final ValueChanged<T?>? onChanged;
   final FocusNode focusNode;
   final GestureTapCallback? onTap;
-  final SuggestionsBoxDecoration? suggestionsBoxDecoration;
+  final BoxConstraints? constraints;
 
   const FormBuilderTypeAheadWrapper({
     super.key,
@@ -135,7 +135,7 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
     this.validate = true,
     this.onChanged,
     this.onTap,
-    this.suggestionsBoxDecoration,
+    this.constraints,
     required this.initialValue,
     required this.name,
     required this.selectionToTextTransformer,
@@ -203,7 +203,7 @@ class _FormBuilderTypeAheadWrapperState<T>
           initialValue: widget.initialValue,
           name: widget.name,
           selectionToTextTransformer: widget.selectionToTextTransformer,
-          suggestionsBoxDecoration: widget.suggestionsBoxDecoration,
+          constraints: widget.constraints,
           decoration: widget.decoration.copyWith(
             suffixIcon: widget.decoration.suffixIcon ??
                 (userInput.isNotEmpty
