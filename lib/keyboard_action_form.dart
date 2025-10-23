@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 export 'package:flutter_form_builder/flutter_form_builder.dart';
 export 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
@@ -129,7 +128,6 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
   final FocusNode focusNode;
   final GestureTapCallback? onTap;
   final BoxConstraints? constraints;
-  final bool autoFlipDirection;
 
   const FormBuilderTypeAheadWrapper({
     super.key,
@@ -138,7 +136,6 @@ class FormBuilderTypeAheadWrapper<T> extends StatefulWidget {
     this.onChanged,
     this.onTap,
     this.constraints,
-    this.autoFlipDirection = true,
     required this.initialValue,
     required this.name,
     required this.selectionToTextTransformer,
@@ -207,32 +204,6 @@ class _FormBuilderTypeAheadWrapperState<T>
           name: widget.name,
           selectionToTextTransformer: widget.selectionToTextTransformer,
           constraints: widget.constraints,
-          autoFlipDirection: widget.autoFlipDirection,
-          listBuilder: (context, children) {
-            final controller = SuggestionsController.of<T>(context);
-            final bool opensUp =
-                controller.effectiveDirection == VerticalDirection.up;
-            final bool keyboardVisible =
-                MediaQuery.of(context).viewInsets.bottom > 0;
-            const double keyboardToolbarHeight = 45.0;
-            const double extraSpacing = 12.0;
-            final double paddingValue =
-                keyboardVisible ? keyboardToolbarHeight + extraSpacing : extraSpacing;
-            final EdgeInsets padding = opensUp
-                ? EdgeInsets.only(top: paddingValue)
-                : EdgeInsets.only(bottom: paddingValue);
-
-            return ListView.builder(
-              controller: null,
-              primary: null,
-              padding: padding,
-              shrinkWrap: true,
-              reverse: opensUp,
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-              itemCount: children.length,
-              itemBuilder: (context, index) => children[index],
-            );
-          },
           decoration: widget.decoration.copyWith(
             suffixIcon: widget.decoration.suffixIcon ??
                 (userInput.isNotEmpty
