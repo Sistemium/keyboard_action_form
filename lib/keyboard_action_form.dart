@@ -336,19 +336,18 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          OutlinedButton(
+                          FilledButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            style: OutlinedButton.styleFrom(
+                            style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 24,
                                 vertical: 16,
                               ),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.outline,
-                                width: 1.5,
-                              ),
+                              backgroundColor: Colors.grey[300],
+                              foregroundColor: Colors.black87,
+                              elevation: 1.0,
                             ),
                             child: Text(
                               'Cancel'.tr(),
@@ -359,34 +358,24 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                             ),
                           ),
                           if (widget.onDelete != null)
-                            CooldownButton(
-                              confirmText: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 16,
-                                ),
-                                child: Text(
-                                  '${'Delete'.tr()}?',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              onConfirm: () {
+                            FilledButton(
+                              onPressed: () {
                                 widget.onDelete?.call();
                               },
-                              text: Padding(
+                              style: FilledButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 16,
                                 ),
-                                child: Text(
-                                  'Delete'.tr(),
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                backgroundColor: Theme.of(context).colorScheme.error,
+                                foregroundColor: Colors.white,
+                                elevation: 2.0,
+                              ),
+                              child: Text(
+                                'Delete'.tr(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
