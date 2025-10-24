@@ -336,33 +336,64 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          ElevatedButton(
+                          OutlinedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Cancel'.tr()),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.outline,
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel'.tr(),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                           if (widget.onDelete != null)
                             CooldownButton(
                               confirmText: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('${'Delete'.tr()}?'),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 16,
+                                ),
+                                child: Text(
+                                  '${'Delete'.tr()}?',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                               onConfirm: () {
                                 widget.onDelete?.call();
                               },
                               text: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('Delete'.tr()),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 16,
+                                ),
+                                child: Text(
+                                  'Delete'.tr(),
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ),
                           ValueListenableBuilder<bool>(
                             valueListenable: formChangedNotifier,
                             builder: (context, formChanged, child) {
-                              return ElevatedButton(
+                              return FilledButton(
                                 onPressed: formChanged
                                     ? () {
                                         if (_formKey.currentState!
@@ -376,9 +407,19 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                         }
                                       }
                                     : null, // disable button when there's no change in form
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(widget.actionLabel),
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 28,
+                                    vertical: 16,
+                                  ),
+                                  elevation: 2.0,
+                                ),
+                                child: Text(
+                                  widget.actionLabel,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               );
                             },
