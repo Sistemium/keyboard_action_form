@@ -270,6 +270,7 @@ class KeyboardActionForm extends StatefulWidget {
   final dynamic Function(Map<String, dynamic> data) onSave;
   final Function()? onDelete;
   final String actionLabel;
+  final String? cancelLabel;
   final bool enableActionWhenNoChanges;
   const KeyboardActionForm(
       {Key? key,
@@ -278,6 +279,7 @@ class KeyboardActionForm extends StatefulWidget {
       this.onDelete,
       required this.length,
       required this.actionLabel,
+      this.cancelLabel,
       this.enableActionWhenNoChanges = true})
       : super(key: key);
 
@@ -350,7 +352,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                               elevation: 1.0,
                             ),
                             child: Text(
-                              'Cancel'.tr(),
+                              widget.cancelLabel ?? 'Cancel'.tr(),
                               style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
