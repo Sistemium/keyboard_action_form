@@ -273,6 +273,7 @@ class KeyboardActionForm extends StatefulWidget {
   final String? cancelLabel;
   final bool enableActionWhenNoChanges;
   final bool showCancelButton;
+  final ValueNotifier<bool>? formChangedNotifier;
   const KeyboardActionForm(
       {Key? key,
       required this.itemsCallback,
@@ -282,7 +283,8 @@ class KeyboardActionForm extends StatefulWidget {
       required this.actionLabel,
       this.cancelLabel,
       this.enableActionWhenNoChanges = true,
-      this.showCancelButton = true})
+      this.showCancelButton = true,
+      this.formChangedNotifier})
       : super(key: key);
 
   @override
@@ -294,14 +296,17 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
   late final List<FocusNode> focusNodes =
       List.generate(widget.length, (index) => FocusNode());
   late final ValueNotifier<bool> formChangedNotifier =
-      ValueNotifier<bool>(widget.enableActionWhenNoChanges);
+      widget.formChangedNotifier ?? ValueNotifier<bool>(widget.enableActionWhenNoChanges);
+  bool get _ownsNotifier => widget.formChangedNotifier == null;
 
   @override
   void dispose() {
     for (var element in focusNodes) {
       element.dispose();
     }
-    formChangedNotifier.dispose();
+    if (_ownsNotifier) {
+      formChangedNotifier.dispose();
+    }
     super.dispose();
   }
 
