@@ -298,6 +298,15 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
   late final ValueNotifier<bool> formChangedNotifier =
       widget.formChangedNotifier ?? ValueNotifier<bool>(widget.enableActionWhenNoChanges);
   bool get _ownsNotifier => widget.formChangedNotifier == null;
+  bool _formReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _formReady = true;
+    });
+  }
 
   @override
   void dispose() {
@@ -316,7 +325,9 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
     final List items = widget.itemsCallback.call(focusNodes);
     return FormBuilder(
       onChanged: () {
-        formChangedNotifier.value = true;
+        if (_formReady) {
+          formChangedNotifier.value = true;
+        }
       },
       key: _formKey,
       child: LayoutBuilder(
