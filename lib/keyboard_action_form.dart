@@ -272,6 +272,7 @@ class KeyboardActionForm extends StatefulWidget {
   final String actionLabel;
   final String? cancelLabel;
   final bool enableActionWhenNoChanges;
+  final bool showCancelButton;
   const KeyboardActionForm(
       {Key? key,
       required this.itemsCallback,
@@ -280,7 +281,8 @@ class KeyboardActionForm extends StatefulWidget {
       required this.length,
       required this.actionLabel,
       this.cancelLabel,
-      this.enableActionWhenNoChanges = true})
+      this.enableActionWhenNoChanges = true,
+      this.showCancelButton = true})
       : super(key: key);
 
   @override
@@ -338,6 +340,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+                          if (widget.showCancelButton)
                           FilledButton(
                             onPressed: () {
                               Navigator.of(context).pop();
