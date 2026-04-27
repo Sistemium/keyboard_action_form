@@ -423,6 +423,7 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                     vertical: 16,
                                   ),
                                   elevation: 2.0,
+                                  disabledElevation: 0.0,
                                 ),
                                 child: Text(
                                   widget.actionLabel,
