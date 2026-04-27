@@ -422,8 +422,13 @@ class _KeyboardActionFormState extends State<KeyboardActionForm> {
                                     horizontal: 28,
                                     vertical: 16,
                                   ),
-                                  elevation: 2.0,
-                                  disabledElevation: 0.0,
+                                ).copyWith(
+                                  elevation:
+                                      WidgetStateProperty.resolveWith<double>(
+                                          (states) => states.contains(
+                                                  WidgetState.disabled)
+                                              ? 0.0
+                                              : 2.0),
                                 ),
                                 child: Text(
                                   widget.actionLabel,
